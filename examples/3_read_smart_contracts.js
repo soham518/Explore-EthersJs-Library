@@ -1,44 +1,25 @@
-require("dotenv").config()
-const { ethers } = require("ethers")
+require("dotenv").config({
+  path: require("path").join(__dirname, "..", ".env"),
+});
 
-// Setup connection
-const URL = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
-const provider = new ethers.JsonRpcProvider(URL)
+const { log } = require("console");
+const { ethers } = require("ethers");
 
-// Define "Application Binary Interface"
-const ERC20_ABI = [
-  "function name() view returns (string)",
-  "function symbol() view returns (string)",
-  "function decimals() view returns (uint256)",
-  "function totalSupply() view returns (uint256)",
-  "function balanceOf(address) view returns (uint)",
-];
+const url = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
+//provider is required to read data by interacting with ethereum blockchain
+const provider = new ethers.JsonRpcProvider(url);
+const ERC20_ADDRESS = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
+const ERC20_ABI = ["function new() view returns (string)"];
 
-// Setup contract
-const ERC20_ADDRESS = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" // USDC Contract
-const contract = new ethers.Contract(ERC20_ADDRESS, ERC20_ABI, provider)
+//abi - application binary interface is basically a part of smartcontract which is used to interact with the function present in the smart contract;
 
-async function main() {
-  // Get contract state
-  const name = await contract.name()
-  const symbol = await contract.symbol()
-  const decimals = await contract.decimals()
-  const totalSupply = await contract.totalSupply()
+const contract = ethers.Contract(ERC20_ADDRESS, ERC20_ABI, provider);
+//provider to read data from the contract and signer to write data through contract.
 
-  // Log contract state
-  console.log(`\nReading from ${ERC20_ADDRESS}\n`)
-  console.log(`Name: ${name}`)
-  console.log(`Symbol: ${symbol}`)
-  console.log(`Decimals: ${decimals}`)
-  console.log(`Total Supply: ${totalSupply}\n`)
-
-  // Get ERC20 balance
-  const USER_ADDRESS = "0x98C23E9d8f34FEFb1B7BD6a91B7FF122F4e16F5c"
-  const balance = await contract.balanceOf(USER_ADDRESS)
-
-  // Log ERC20 balance
-  console.log(`Balance Returned: ${balance}`)
-  console.log(`Balance Formatted: ${ethers.formatUnits(balance, decimals)}\n`)
+async function main(params) {
+  const name = await contract.name();
+  console.log("contract address:", ERC20_ADDRESS);
+  console.log(`\nToken Name: ${name}`);
 }
 
-main()
+main();
