@@ -1,16 +1,16 @@
-const { ethers } = require("ethers");
 require("dotenv").config();
+const { ethers } = require("ethers");
+
 // Setup connection
-const url = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHIMY_API_KEY}`;
+const url = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
+console.log("Alchemy URL:", url); // should print your API key
+
 const provider = new ethers.JsonRpcProvider(url);
 
-const ADDRESS = "0x4838B106FCe9647Bdf1E7877BF73cE8B0BAD5f97";
+const ADDRESS = "0xdadB0d80178819F2319190D340ce9A924f783711";
+
 async function main() {
-  // Get balance
-  //provider is to read any data from the blockchain.
-  //signer is for writing any data on the blockchain
   const balance = await provider.getBalance(ADDRESS);
-  // format ether is used to convert the balance from wei to eth.
   console.log(`Balance: ${ethers.formatEther(balance)} ETH`);
 }
 
