@@ -8,7 +8,7 @@ const { ethers } = require("ethers");
 const url = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
 //provider is required to read data by interacting with ethereum blockchain
 const provider = new ethers.JsonRpcProvider(url);
-const ERC20_ADDRESS = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
+const ERC20_ADDRESS = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"; //uniswap contract address
 const ERC20_ABI = [
   "function name() view returns (string)",
   "function symbol() view returns (string)",
