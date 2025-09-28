@@ -9,7 +9,11 @@ const url = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}
 //provider is required to read data by interacting with ethereum blockchain
 const provider = new ethers.JsonRpcProvider(url);
 const ERC20_ADDRESS = "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984";
-const ERC20_ABI = ["function name() view returns (string)"];
+const ERC20_ABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function balanceOf(address) view returns (uint)",
+];
 
 //abi - application binary interface is basically a part of smartcontract which is used to interact with the function present in the smart contract;
 
@@ -18,8 +22,14 @@ const contract = new ethers.Contract(ERC20_ADDRESS, ERC20_ABI, provider);
 
 async function main(params) {
   const name = await contract.name();
+  const symbol = await contract.symbol();
+  const accountAddress = "0x1a9C8182C09F50C8318d769245beA52c32BE35BC";
+  const balance = await contract.balanceOf(accountAddress);
+  const formattedBalance = ethers.formatUnits(balance, 18);
   console.log("contract address:", ERC20_ADDRESS);
   console.log(`\nToken Name: ${name}`);
+  console.log(`\nToken Symbol: ${symbol}`);
+  console.log(`\nBalance of: ${accountAddress} is ${formattedBalance}`);
 }
 
 main();
